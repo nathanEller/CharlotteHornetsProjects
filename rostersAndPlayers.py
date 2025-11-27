@@ -6,6 +6,7 @@ robots reference
 https://www.basketball-reference.com/robots.txt
 
 following are the pip installs
+pip install selenium
 pip install webdriver-manager
 """
 from selenium import webdriver
@@ -14,19 +15,6 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
 import time
-from bs4 import BeautifulSoup
-
-#set request headers
-headers = {
-	':authority': 'www.basketball-reference.com',
-	##':method': 'GET',
-	##':path': '/teams/CHO/2026.html',
-	##':scheme': 'https',
-	'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-	'accept-encoding': 'gzip, deflate, br, zstd',
-	'accept-language':'en-US,en;q=0.9',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36'
-}
 
 #return a dataframe of the players on the Hornets for the season ending in year provided
 def charlotteRoster(year):
@@ -34,10 +22,13 @@ def charlotteRoster(year):
 
 	service = Service(ChromeDriverManager().install())
 	driver = webdriver.Chrome(service=service)
-	driver.get(url)
-	time.sleep(900)
-	##table = driver.find_element(By.ID, 'per_game')
-	##table_html = table.get_attribute('outerHTML')
+	driver.get(url) #deal with timeouts of js on page
+
+	##page insepction shows that the element to inspect is a table with the id of 'roster'
+	table = driver.find_element(By.ID, 'roster')
+	outer_html_table = table.get_attribute('outerHTML')
+	#time.sleep(15)
 	##df = pd.read_html(table_html)[0]
 	##print(df.head())
+	driver.quit()
 	return 200
