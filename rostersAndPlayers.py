@@ -7,28 +7,37 @@ https://www.basketball-reference.com/robots.txt
 
 following are the pip installs
 pip install selenium
-pip install webdriver-manager
+pip install pandas
 """
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By 
 import pandas as pd
 import time
 
 #return a dataframe of the players on the Hornets for the season ending in year provided
 def charlotteRoster(year):
+	#give url and instruct selenium to have eager loading
 	url=(f'https://www.basketball-reference.com/teams/CHO/{year}.html')
+	options= webdriver.ChromeOptions()
+	options.page_load_strategy = 'eager'
 
-	service = Service(ChromeDriverManager().install())
-	driver = webdriver.Chrome(service=service)
-	driver.get(url) #deal with timeouts of js on page
+	#instantiate driver and make connection
+	driver=webdriver.Chrome(options=options)
+	driver.get(url) 
+
+	##5 seconds to give basic html elements time to load
+	time.sleep(2)
 
 	##page insepction shows that the element to inspect is a table with the id of 'roster'
 	table = driver.find_element(By.ID, 'roster')
-	outer_html_table = table.get_attribute('outerHTML')
-	#time.sleep(15)
-	##df = pd.read_html(table_html)[0]
-	##print(df.head())
+	table_html = table.get_attribute('outerHTML')
+	
+	df = pd.read_html(table_html)[0]
+
+	#clean up connection
 	driver.quit()
+	return df
+
+#return player stats for a given year
+def playerStatsYear(playerName, year):
 	return 200
