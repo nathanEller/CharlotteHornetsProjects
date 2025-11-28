@@ -55,8 +55,36 @@ def playerNameToID(playerName):
 	return idTag
 
 #return dataframe of player counting stats or player advanced stats for their career
-#mode will be either "count" or "adv"
+#mode will be either "count" or "advanced"
 def getPlayerStats(player, mode):
+
 	idTag = playerNameToID(player)
 	url=(f'https://www.basketball-reference.com/players/{idTag}.html')
-	return url
+	print(url)
+	#options to avoid timeouts in loading the webpage
+	options= webdriver.ChromeOptions()
+	options.page_load_strategy = 'eager'
+
+	#instantiate driver and make connection; sleeping 2 seconds to give elements time to load
+	driver=webdriver.Chrome(options=options)
+	driver.get(url)
+	time.sleep(2)
+
+	if(mode == 'count'):
+		
+		table = driver.find_element(By.ID, 'totals_stats') #id of element of table for traditional counting stats
+		table_html = table.get_attribute('outerHTML')
+		df = pd.read_html(table_html)[0]
+		driver.quit()
+
+	elif(mode == 'adv'):
+
+		table = driver.find_element(By.ID, 'advanced') #id of element of table for traditional counting stats
+		table_html = table.get_attribute('outerHTML')
+		df = pd.read_html(table_html)[0]
+		driver.quit()
+
+	else:
+		print("i am in the else block")
+
+	return df

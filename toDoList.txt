@@ -1,0 +1,10 @@
+11/28/2025 -
+1) fix def playerNameToID(playerName) in rostersAndPlayers.py to account for fact that sometimes players have an 02 identifier vs 01 identifier.
+Example - Brandon Miller and Brad Miller
+
+2) clean up dataframe returned by getPlayerStats() in rostersAndPlayers.py
+
+3) write function for handling connections
+
+4) fix the "passing literal html" warnings
+https://stackoverflow.com/questions/77748143/futurewarning-passing-literal-html-to-read-html-is-deprecated-and-will-be-rem

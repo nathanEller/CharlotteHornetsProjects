@@ -10,7 +10,7 @@ def main():
         #playerID = rostersAndPlayers.playerNameToID("Brandon Miller")
         #print(playerID)
 
-        df = rostersAndPlayers.getPlayerStats("LaMelo Ball", "counting")
+        df = rostersAndPlayers.getPlayerStats("Bryce McGowens", "adv")
         print(df)
 
 if __name__ == "__main__":
