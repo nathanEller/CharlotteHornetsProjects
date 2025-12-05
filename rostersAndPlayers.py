@@ -11,6 +11,7 @@ pip install pandas
 """
 from selenium import webdriver
 from selenium.webdriver.common.by import By 
+from io import StringIO
 import pandas as pd
 import time
 
@@ -29,7 +30,7 @@ def getRoster(year):
 	#page insepction shows that the element to inspect is a table with the id of 'roster'
 	table = driver.find_element(By.ID, 'roster')
 	table_html = table.get_attribute('outerHTML')
-	df = pd.read_html(table_html)[0]
+	df = pd.read_html(StringIO(table_html))[0]
 
 	#clean up connection
 	driver.quit()
@@ -74,14 +75,14 @@ def getPlayerStats(player, mode):
 		
 		table = driver.find_element(By.ID, 'totals_stats') #id of element of table for traditional counting stats
 		table_html = table.get_attribute('outerHTML')
-		df = pd.read_html(table_html)[0]
+		df = pd.read_html(StringIO(table_html))[0]
 		driver.quit()
 
 	elif(mode == 'adv'):
 
 		table = driver.find_element(By.ID, 'advanced') #id of element of table for traditional counting stats
 		table_html = table.get_attribute('outerHTML')
-		df = pd.read_html(table_html)[0]
+		df = pd.read_html(StringIO(table_html))[0]
 		driver.quit()
 
 	else:
