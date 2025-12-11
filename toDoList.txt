@@ -1,6 +1,7 @@
 11/28/2025 -
 1) fix def playerNameToID(playerName) in rostersAndPlayers.py to account for fact that sometimes players have an 02 identifier vs 01 identifier.
 Example - Brandon Miller and Brad Miller
+		- Miles Bridges and Mikhal Bridges
 
 2) clean up dataframe returned by getPlayerStats() in rostersAndPlayers.py
 
