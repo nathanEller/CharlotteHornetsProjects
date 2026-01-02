@@ -3,6 +3,8 @@
 Example - Brandon Miller and Brad Miller
 		- Miles Bridges and Mikhal Bridges
 
+		01/02/2026 - made it so that getRoster function returns player tag
+
 2) clean up dataframe returned by getPlayerStats() in rostersAndPlayers.py
 
 3) write function for handling connections

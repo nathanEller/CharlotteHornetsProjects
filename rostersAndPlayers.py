@@ -12,6 +12,7 @@ pip install pandas
 from selenium import webdriver
 from selenium.webdriver.common.by import By 
 from io import StringIO
+from bs4 import BeautifulSoup
 import pandas as pd
 import time
 
@@ -50,15 +51,32 @@ def getRoster(year):
 	driver.get(url)
 	time.sleep(2)
 
-	#page insepction shows that the element to inspect is a table with the id of 'roster'
-	table = driver.find_element(By.ID, 'roster')
-	table_html = table.get_attribute('outerHTML')
-	df = pd.read_html(StringIO(table_html))[0]
+	#get beautiful soup object
+	html = driver.page_source
+	soup = BeautifulSoup(html, 'html.parser')
 
-	#clean up connection
+	#page insepction shows that the element to inspect is a table with the id of 'roster'
+	table = soup.find(id = 'roster')
+
+	# extracting records from table
+	all_trs = table.find_all('tr')
+	data_rows = all_trs[1:] #first table row is a header row
+
+	#return the players basketball reference player tag
+	links = []
+	for i,row in enumerate(data_rows):
+		first_href = row.find('a')
+		if first_href:
+			links.append(first_href.get('href'))
+
+	#get the player name and info
+	df = []
+	df = pd.read_html(StringIO(str(table)))[0]
+
+	df['playerTag'] = links
 	driver.quit()
 	return df
-
+	
 """
 return dataframe of player counting stats or player advanced stats for their career
 mode will be either "count" or "advanced"
